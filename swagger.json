@@ -53,11 +53,23 @@
           },
           "400": {
             "description": "Bad request (missing fields)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           },
           "409": {
             "description": "Email in use",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -92,7 +104,13 @@
           },
           "400": {
             "description": "Missing fields",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Email or password is wrong",
@@ -145,6 +163,48 @@
           }
         }
       }
+    },
+    "/api/help/email": {
+      "post": {
+        "tags": ["Help"],
+        "summary": "Need help form submitting",
+        "parameters": [],
+        "requestBody": {
+          "description": "Need help form object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeedHelpFormRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Email sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NeedHelpFormResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -156,12 +216,13 @@
           "name": {
             "type": "string",
             "description": "User's name",
-            "example": "User"
+            "example": "Andrew"
           },
           "email": {
             "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email",
+            "example": "Andrew@example.com"
           },
           "password": {
             "type": "string",
@@ -179,37 +240,25 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "User's name"
+                "description": "User's name",
+                "example": "Andrew"
               },
               "email": {
                 "type": "string",
                 "description": "User's email",
-                "format": "email"
+                "format": "email",
+                "example": "Andrew@example.com"
               },
               "avatarURL": {
                 "type": "string",
-                "description": "User's avatar URL"
+                "description": "User's avatar URL",
+                "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
               }
             }
           }
         }
       },
-      "LoginRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
-          }
-        }
-      },
+
       "LoginResponse": {
         "type": "object",
 
@@ -224,16 +273,19 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "User's name"
+                "description": "User's name",
+                "example": "Andrew"
               },
               "email": {
                 "type": "string",
                 "description": "User's email",
-                "format": "email"
+                "format": "email",
+                "example": "Andrew@example.com"
               },
               "avatarURL": {
                 "type": "string",
-                "description": "User's avatar URL"
+                "description": "User's avatar URL",
+                "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
               }
             }
           }
@@ -244,16 +296,83 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Current user's name"
+            "description": "Current user's name",
+            "example": "Andrew"
           },
           "email": {
             "type": "string",
             "description": "Current user's email",
-            "format": "email"
+            "format": "email",
+            "example": "Andrew@example.com"
           },
           "avatarURL": {
             "type": "string",
-            "description": "Current user's avatar URL"
+            "description": "Current user's avatar URL",
+            "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "Andrew@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "NeedHelpFormRequest": {
+        "type": "object",
+        "required": ["email", "comment"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "Andrew@example.com"
+          },
+          "comment": {
+            "type": "string",
+            "description": "User's comment",
+            "example": "I need help with application"
+          }
+        }
+      },
+      "NeedHelpFormResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Current user's name",
+            "example": "Email sent"
+          }
+        }
+      },
+      "BadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Missing fields"
+          }
+        }
+      },
+      "ConflictResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Email in use"
           }
         }
       }
