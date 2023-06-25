@@ -442,6 +442,11 @@
         "items": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Board's id",
+              "example": "648f22dda2d8f8537d580812"
+            },
             "title": {
               "type": "string",
               "description": "Board's title",
@@ -484,6 +489,11 @@
         "type": "object",
         "required": ["title"],
         "properties": {
+           "_id": {
+              "type": "string",
+              "description": "Board's id",
+              "example": "648f22dda2d8f8537d580812"
+            },
           "title": {
             "type": "string",
             "description": "Boards's title",
