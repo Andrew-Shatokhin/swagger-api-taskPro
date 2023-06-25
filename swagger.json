@@ -205,7 +205,68 @@
           }
         }
       }
+    },
+    "/api/boards": {
+      "get": {
+        "tags": ["Boards"],
+        "summary": "Get all user's boards",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllBoardsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Boards"],
+        "summary": "Add board",
+        "parameters": [],
+        "requestBody": {
+          "description": "Board's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBoardRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
     }
+
+    
   },
   "components": {
     "schemas": {
@@ -375,7 +436,76 @@
             "example": "Email in use"
           }
         }
+      },
+      "GetAllBoardsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Board's title",
+              "example": "New Board"
+            },
+            "currentBg": {
+              "type": "number",
+              "description": "Board's backgound color",
+              "example": "121212"
+            },
+            "owner": {
+              "type": "string",
+              "description": "Board's owner(user) id",
+              "example": "648f22dda2d8f8537d580812"
+            }
+
+           
+          }
+        }
+
+       
+      },
+      "AddBoardRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Boards's title",
+            "example": "New Board"
+          },
+          "currentBg": {
+            "type": "number",
+            "description": "Board's backgound color",
+            "example": "121212"
+          }
+        }
+      },
+      "AddBoardResponse": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Boards's title",
+            "example": "New Board"
+          },
+          "currentBg": {
+            "type": "number",
+            "description": "Board's backgound color",
+            "example": "121212"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Board's owner(user) id",
+            "example": "648f22dda2d8f8537d580812"
+          }
+        }
       }
+
+      
+
+      
+      
     },
 
     "securitySchemes": {
