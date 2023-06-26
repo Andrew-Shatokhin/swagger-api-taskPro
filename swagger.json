@@ -23,14 +23,25 @@
       "description": "Authorization endpoints"
     },
     {
-      "name": "Help",
-      "description": "Need help endpoints"
-    },
-    {
       "name": "Boards",
       "description": "Boards endpoints"
+    },
+    {
+      "name": "Columns",
+      "description": "Columns endpoints"
+    },
+    {
+      "name": "Tasks",
+      "description": "Tasks endpoints"
+    },
+    {
+      "name": "Background",
+      "description": "Background endpoints"
+    },
+    {
+      "name": "Help",
+      "description": "Need help endpoints"
     }
-
   ],
   "paths": {
     "/users/register": {
@@ -248,48 +259,7 @@
     },
 
     
-    "/api/help/email": {
-      "post": {
-        "tags": ["Help"],
-        "summary": "Need help form submitting",
-        "parameters": [],
-        "requestBody": {
-          "description": "Need help form object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NeedHelpFormRequest"
-              }
-            }
-          }
-        },
-        "security": [{ "Bearer": [] }],
-
-        "responses": {
-          "200": {
-            "description": "Email sent",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NeedHelpFormResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing fields",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+    
     "/api/boards": {
       "get": {
         "tags": ["Boards"],
@@ -345,6 +315,48 @@
           "401": {
             "description": "Not authorized",
             "content": {}
+          }
+        }
+      }
+    },
+    "/api/help/email": {
+      "post": {
+        "tags": ["Help"],
+        "summary": "Need help form submitting",
+        "parameters": [],
+        "requestBody": {
+          "description": "Need help form object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeedHelpFormRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Email sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NeedHelpFormResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         }
       }
