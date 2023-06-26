@@ -21,7 +21,16 @@
     {
       "name": "Auth",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "Help",
+      "description": "Need help endpoints"
+    },
+    {
+      "name": "Boards",
+      "description": "Boards endpoints"
     }
+
   ],
   "paths": {
     "/users/register": {
@@ -164,6 +173,81 @@
         }
       }
     },
+    "/users/theme": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Change current user's theme",
+        "parameters": [],
+        "requestBody": {
+          "description": "Change theme's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeThemeRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeThemeResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/users/upload": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Upload user's avatar",
+        "parameters": [],
+        "requestBody": {
+          "description": "User's avatar object",
+          "required": true,
+          "content": {
+            "image/jpg": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAvatarRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadAvatarResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    
     "/api/help/email": {
       "post": {
         "tags": ["Help"],
@@ -370,6 +454,11 @@
             "type": "string",
             "description": "Current user's avatar URL",
             "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
+          },
+          "theme": {
+            "type": "string",
+            "description": "Board's theme",
+            "example": "dark"
           }
         }
       },
@@ -390,11 +479,75 @@
           }
         }
       },
+      "ChangeThemeRequest": {
+        "type": "object",
+        "required": ["theme"],
+        "properties": {
+          "theme": {
+            "type": "string",
+            "description": "User's theme",
+            "enum": ["dark", "light", "violet"],
+            "example": "dark"
+          }
+          
+        }
+      },
+      "ChangeThemeResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+          "theme": {
+            "type": "string",
+            "description": "User's theme",
+            "enum": ["dark", "light", "violet"],
+            "example": "dark"
+          }                
+
+          }
+          
+        }
+      }
+    },
+    "UploadAvatarRequest": {
+        "type": "object",
+        
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+          
+        }
+      },
+      "UploadAvatarResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+            
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar URL",
+            "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
+          }                
+                 
+        }
+      },
+    
+          
+      
+      
+
+      
+
       "NeedHelpFormRequest": {
         "type": "object",
         "required": ["email", "comment"],
         "properties": {
-          "email": {
+          "replyEmail": {
             "type": "string",
             "description": "User's email",
             "format": "email",
@@ -455,18 +608,43 @@
             "currentBg": {
               "type": "number",
               "description": "Board's backgound color",
-              "example": "121212"
+              "example": "2"
             },
             "owner": {
-              "type": "string",
-              "description": "Board's owner(user) id",
-              "example": "648f22dda2d8f8537d580812"
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Board's owner id",
+                  "example": "648f22dda2d8f8537d582549"
+            },
+                "name": {
+                  "type": "string",
+                  "description": "Board's owner name",
+                  "example": "Andrew"
+            },
+                "email": {
+                  "type": "string",
+                  "description": "Board's owner email",
+                  "format": "email",
+                  "example": "Andrew@example.com"
+          },
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Board's owner avatar URL",
+                  "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
+          },
+                "theme": {
+                  "type": "string",
+                  "description": "Board's theme",
+                  "example": "dark"
+            }              
             }
 
            
           }
         }
-
+      }
        
       },
       "AddBoardRequest": {
@@ -481,7 +659,7 @@
           "currentBg": {
             "type": "number",
             "description": "Board's backgound color",
-            "example": "121212"
+            "example": "2"
           }
         }
       },
@@ -502,7 +680,7 @@
           "currentBg": {
             "type": "number",
             "description": "Board's backgound color",
-            "example": "121212"
+            "example": "2"
           },
           "owner": {
             "type": "string",
