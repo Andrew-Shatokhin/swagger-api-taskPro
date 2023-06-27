@@ -319,6 +319,70 @@
         }
       }
     },
+
+    "/api/columns": {
+      "get": {
+        "tags": ["Columns"],
+        "summary": "Get all user board's columns",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllBoardsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Boards"],
+        "summary": "Add board",
+        "parameters": [],
+        "requestBody": {
+          "description": "Board's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBoardRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+
+
+
     "/api/help/email": {
       "post": {
         "tags": ["Help"],
@@ -443,6 +507,11 @@
                 "type": "string",
                 "description": "User's avatar URL",
                 "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
+              },
+              "theme": {
+                "type": "string",
+                "description": "Users's theme",
+                "example": "dark"
               }
             }
           }
@@ -607,6 +676,12 @@
         "items": {
           "type": "object",
           "properties": {
+            "icon": {
+              "type": "number",
+              "description": "Board's icon",
+              "default": null,
+              "example": "2"
+            },
             "_id": {
               "type": "string",
               "description": "Board's id",
@@ -629,33 +704,31 @@
                   "type": "string",
                   "description": "Board's owner id",
                   "example": "648f22dda2d8f8537d582549"
-            },
+                },
                 "name": {
                   "type": "string",
                   "description": "Board's owner name",
                   "example": "Andrew"
-            },
+                },
                 "email": {
                   "type": "string",
                   "description": "Board's owner email",
                   "format": "email",
                   "example": "Andrew@example.com"
-          },
+                },
                 "avatarURL": {
                   "type": "string",
                   "description": "Board's owner avatar URL",
                   "example": "https://i.pinimg.com/originals/b7/34/e9/b734e9d303af5f13994c12d407862658.png"
-          },
+                },
                 "theme": {
                   "type": "string",
                   "description": "Board's theme",
                   "example": "dark"
-            }              
+                }
+              }
             }
-
-           
           }
-        }
       }
        
       },
@@ -672,6 +745,16 @@
             "type": "number",
             "description": "Board's backgound color",
             "example": "2"
+          },
+          "icon": {
+            "type": "number",
+            "description": "Board's icon",
+            "example": "1"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Board's owner(user) id",
+            "example": "648f22dda2d8f8537d580812"
           }
         }
       },
@@ -682,7 +765,7 @@
            "_id": {
               "type": "string",
               "description": "Board's id",
-              "example": "648f22dda2d8f8537d580812"
+              "example": "984f22GGa2d8f8537d580812"
             },
           "title": {
             "type": "string",
@@ -693,6 +776,11 @@
             "type": "number",
             "description": "Board's backgound color",
             "example": "2"
+          },
+          "icon": {
+            "type": "number",
+            "description": "Board's icon",
+            "example": "1"
           },
           "owner": {
             "type": "string",
